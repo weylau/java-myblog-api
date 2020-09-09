@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace：用于绑定dao接口，dao接口的方法对应mapper中的sql语名-->
+<mapper namespace="com.weylau.javamyblogapi.dao.ArticlesDao">
+    <resultMap id="BaseResultMap" type="com.weylau.javamyblogapi.model.Articles">
+        <id column="article_id" jdbcType="INTEGER" property="articleId"/>
+        <result column="cate_id" jdbcType="INTEGER" property="cateId"/>
+        <result column="op_id" jdbcType="INTEGER" property="opId"/>
+        <result column="op_user" jdbcType="VARCHAR" property="opUser"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="keywords" jdbcType="VARCHAR" property="keywords"/>
+        <result column="img_path" jdbcType="VARCHAR" property="imgPath"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+    <!--resultType:返回结果类型-->
+    <select id="getDetailById" resultMap="BaseResultMap">
+		SELECT article_id, cate_id,
+		title, status, description,keywords,img_path,op_id,op_user,create_time,modify_time
+		FROM mb_articles
+		WHERE
+		article_id=#{articleId}
+	</select>
+    <select id="getArticles" resultMap="BaseResultMap">
+        SELECT article_id, cate_id,
+        title, status, description,keywords,img_path,op_id,op_user,create_time,modify_time
+        FROM mb_articles
+        WHERE
+        1
+        <if test="cateId > 0">
+            and cate_id = #{cateId}
+        </if>
+        order by create_time desc
+        limit #{offset},#{pageSize}
+    </select>
+
+<!--    keyColumn对应的是数据库中的主键-->
+    <insert id="createArticle" parameterType="com.weylau.javamyblogapi.model.Articles">
+    <selectKey keyColumn="article_id" keyProperty="articleId" order="AFTER" resultType="java.lang.Integer">
+    --     selectKey表示可以将LAST_INSERT_ID()返回的id值设置到实体中所对应的id。
+    --     keyProperty对应的是实体中的主键id
+    --     keyColumn对应的是数据库中的主键
+    --     resultType表示的是返回的数据类型
+    --     order表示的是执行insert语句之后再将结果设置到实体中的id
+        select LAST_INSERT_ID()
+    </selectKey>
+        INSERT INTO `mb_articles`(
+        cate_id,
+		title,
+		status,
+		description,
+		keywords,
+		img_path,
+		op_id,
+		op_user,
+		create_time,
+		modify_time
+		) VALUES(
+		#{cateId},
+		#{title},
+		#{status},
+		#{description},
+		#{keywords},
+		#{imgPath},
+		#{opId,jdbcType=INTEGER},
+		#{opUser},
+		#{createTime},
+		#{modifyTime}
+		)
+    </insert>
+
+    <update id="updateArticle" parameterType="com.weylau.javamyblogapi.model.Articles">
+    update mb_articles
+    <set>
+        <if test="articles.cateId != null">
+            cate_id = #{articles.cateId,jdbcType=INTEGER},
+        </if>
+        <if test="articles.title != null">
+            title = #{articles.title,jdbcType=VARCHAR},
+        </if>
+        <if test="articles.status != null">
+            status = #{articles.status,jdbcType=TINYINT},
+        </if>
+        <if test="articles.description != null">
+            description = #{articles.description,jdbcType=VARCHAR},
+        </if>
+        <if test="articles.keywords != null">
+            keywords = #{articles.keywords,jdbcType=VARCHAR},
+        </if>
+        <if test="articles.imgPath != null">
+            img_path = #{articles.imgPath,jdbcType=VARCHAR},
+        </if>
+        <if test="articles.opId != null">
+            op_id = #{articles.opId,jdbcType=INTEGER},
+        </if>
+        <if test="articles.opUser != null">
+            op_user = #{articles.opUser,jdbcType=VARCHAR},
+        </if>
+        <if test="articles.modifyTime != null">
+            modify_time = #{articles.modifyTime,jdbcType=TIMESTAMP},
+        </if>
+    </set>
+    where article_id = #{articleId}
+</update>
+
+</mapper>

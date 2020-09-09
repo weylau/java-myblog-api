@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace：用于绑定dao接口，dao接口的方法对应mapper中的sql语名-->
+<mapper namespace="com.weylau.javamyblogapi.dao.ArticlesContentsDao">
+    <resultMap id="BaseResultMap" type="com.weylau.javamyblogapi.model.ArticlesContents">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="article_id" jdbcType="INTEGER" property="articleId"/>
+        <result column="show_type" jdbcType="TINYINT" property="showType"/>
+        <result column="contents" jdbcType="VARCHAR" property="contents"/>
+    </resultMap>
+    <select id="getByArticleId" resultMap="BaseResultMap">
+		SELECT article_id, show_type,contents
+		FROM mb_articles_contents
+		WHERE
+		article_id=#{articleId}
+	</select>
+    <insert id="createArticleContent" parameterType="com.weylau.javamyblogapi.model.ArticlesContents" useGeneratedKeys="true"
+            keyProperty="id">
+        INSERT INTO `mb_articles_contents`(
+        article_id,
+		show_type,
+		contents
+		) VALUES(
+		#{articleId},
+		#{showType},
+		#{contents}
+		)
+    </insert>
+
+	<update id="updateArticleContent" parameterType="com.weylau.javamyblogapi.model.ArticlesContents">
+		update mb_articles_contents
+		<set>
+			<if test="articlesContents.showType != null">
+				show_type = #{articlesContents.showType,jdbcType=TINYINT},
+			</if>
+			<if test="articlesContents.contents != null">
+				contents = #{articlesContents.contents,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where article_id = #{articleId}
+	</update>
+
+</mapper>

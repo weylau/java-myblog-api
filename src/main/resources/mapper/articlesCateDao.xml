@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace：用于绑定dao接口，dao接口的方法对应mapper中的sql语名-->
+<mapper namespace="com.weylau.javamyblogapi.dao.ArticlesCateDao">
+	<resultMap id="BaseResultMap" type="com.weylau.javamyblogapi.model.ArticlesCate">
+		<id column="cate_id" jdbcType="INTEGER" property="cateId" />
+		<result column="name" jdbcType="VARCHAR" property="name" />
+		<result column="c_name" jdbcType="VARCHAR" property="cName" />
+		<result column="description" jdbcType="VARCHAR" property="description" />
+		<result column="parent_id" jdbcType="INTEGER" property="parentId" />
+		<result column="orderby" jdbcType="INTEGER" property="orderby" />
+		<result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="op_id" jdbcType="INTEGER" property="opId" />
+		<result column="op_user" jdbcType="VARCHAR" property="opUser" />
+	</resultMap>
+	<resultMap id="listResultMap" type ="com.weylau.javamyblogapi.model.ArticlesCate">
+		<id column="cate_id" jdbcType="INTEGER" property="cateId" />
+		<result column="name" jdbcType="VARCHAR" property="name" />
+		<result column="c_name" jdbcType="VARCHAR" property="cName" />
+	</resultMap>
+    <!--resultType:返回结果类型-->
+    <select id="getList" resultMap="listResultMap">
+		SELECT cate_id,
+		`name`, c_name
+		FROM mb_articles_cate
+		WHERE
+		1
+	</select>
+
+</mapper>
