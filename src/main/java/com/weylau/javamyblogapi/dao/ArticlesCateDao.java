@@ -1,6 +1,6 @@
 package com.weylau.javamyblogapi.dao;
 
-import com.weylau.javamyblogapi.model.ArticlesCate;
+import com.weylau.javamyblogapi.entity.ArticlesCate;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

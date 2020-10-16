@@ -3,9 +3,17 @@ package com.weylau.javamyblogapi.service.front.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.weylau.javamyblogapi.entity.Articles;
+import com.weylau.javamyblogapi.entity.ArticlesContents;
+import com.weylau.javamyblogapi.entity.ArticlesContentsExample;
 import com.weylau.javamyblogapi.entity.ArticlesExample;
+import com.weylau.javamyblogapi.exception.MyblogException;
+import com.weylau.javamyblogapi.mapper.ArticlesContentsMapper;
 import com.weylau.javamyblogapi.mapper.ArticlesMapper;
+import com.weylau.javamyblogapi.request.front.ArticleDetailRequest;
+import com.weylau.javamyblogapi.request.front.ArticleListRequest;
 import com.weylau.javamyblogapi.response.Response;
+import com.weylau.javamyblogapi.response.front.ArticleDetailResponse;
+import com.weylau.javamyblogapi.response.front.ArticleListResponse;
 import com.weylau.javamyblogapi.service.front.ArticlesService;
 import com.weylau.javamyblogapi.utils.ResponseUtil;
 import com.weylau.javamyblogapi.utils.Utils;
@@ -14,7 +22,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ArticlesServiceImpl implements ArticlesService {
@@ -23,34 +33,70 @@ public class ArticlesServiceImpl implements ArticlesService {
     @Autowired
     ArticlesMapper articlesMapper;
 
+    @Autowired
+    ArticlesContentsMapper articlesContentsMapper;
+
 
     @Override
-    public Response getList(Integer page, Integer page_size, Integer cate_id) {
+    public List<ArticleListResponse> getList(ArticleListRequest articleListRequest) {
         ArticlesExample articlesExample = new ArticlesExample();
         ArticlesExample.Criteria criteria = articlesExample.createCriteria();
-        if(cate_id > 0) {
-            criteria.andCateIdEqualTo(cate_id);
+        if(articleListRequest.getCateId() > 0) {
+            criteria.andCateIdEqualTo(articleListRequest.getCateId());
         }
-        PageHelper.startPage(page,page_size);
+        PageHelper.startPage(articleListRequest.getPage(),articleListRequest.getPageSize());
         List<Articles> articles = articlesMapper.selectByExample(articlesExample);
+        List<ArticleListResponse> articleListResponses = new ArrayList<>();
+        articles.forEach(article -> {
+            ArticleListResponse articleListResponse = new ArticleListResponse();
+            articleListResponse.setArticleId(article.getArticleId());
+            articleListResponse.setCateId(article.getCateId());
+            articleListResponse.setCreateTime(article.getCreateTime());
+            articleListResponse.setDescription(article.getDescription());
+            articleListResponse.setImgPath(article.getImgPath());
+            articleListResponse.setKeywords(article.getKeywords());
+            articleListResponse.setModifyTime(article.getModifyTime());
+            articleListResponse.setOpId(article.getOpId());
+            articleListResponse.setOpUser(article.getOpUser());
+            articleListResponse.setStatus(article.getStatus());
+            articleListResponse.setTitle(article.getTitle());
+            articleListResponses.add(articleListResponse);
+        });
         //获取分页信息
         PageInfo<Articles> pageInfo = new PageInfo<Articles>(articles);
         long count  = pageInfo.getTotal();
         logger.info("page-total:"+count);
-        return ResponseUtil.success(articles);
+        return articleListResponses;
     }
 
     @Override
-    public Response detail(Integer id) {
-        String cacheKey = "article_detail_"+id;
-        ArticlesExample articlesExample = new ArticlesExample();
-        ArticlesExample.Criteria criteria = articlesExample.createCriteria();
-        criteria.andArticleIdEqualTo(id);
-        List<Articles> articles = articlesMapper.selectByExample(articlesExample);
-        if(Utils.isEmpty(articles)) {
-            return ResponseUtil.error(-1, "文章不存在！");
+    public ArticleDetailResponse detail(ArticleDetailRequest articleDetailRequest) {
+        String cacheKey = "article_detail_"+articleDetailRequest.getId();
+        Articles article = articlesMapper.selectByPrimaryKey(articleDetailRequest.getId());
+        ArticlesContentsExample articlesContentsExample = new ArticlesContentsExample();
+        ArticlesContentsExample.Criteria criteria = articlesContentsExample.createCriteria();
+        criteria.andArticleIdEqualTo(articleDetailRequest.getId());
+        List<ArticlesContents> articlesContents = articlesContentsMapper.selectByExampleWithBLOBs(articlesContentsExample);
+
+        Optional<Articles> articlesOptional = Optional.ofNullable(article);
+        if(!articlesOptional.isPresent() || articlesContents.size() <= 0) {
+            throw new MyblogException("-1", "文章不存在！");
         }
-        return ResponseUtil.success(articles.get(0));
+        article = articlesOptional.get();
+        ArticleDetailResponse articleDetailResponse = new ArticleDetailResponse();
+        articleDetailResponse.setArticleId(article.getArticleId());
+        articleDetailResponse.setCateId(article.getCateId());
+        articleDetailResponse.setCreateTime(article.getCreateTime());
+        articleDetailResponse.setDescription(article.getDescription());
+        articleDetailResponse.setImgPath(article.getImgPath());
+        articleDetailResponse.setKeywords(article.getKeywords());
+        articleDetailResponse.setModifyTime(article.getModifyTime());
+        articleDetailResponse.setOpId(article.getOpId());
+        articleDetailResponse.setOpUser(article.getOpUser());
+        articleDetailResponse.setStatus(article.getStatus());
+        articleDetailResponse.setTitle(article.getTitle());
+        articleDetailResponse.setContents(articlesContents.get(0).getContents());
+        return articleDetailResponse;
     }
 
 

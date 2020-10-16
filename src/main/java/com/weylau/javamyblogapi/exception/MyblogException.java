@@ -1,14 +1,12 @@
 package com.weylau.javamyblogapi.exception;
 
+import com.gitee.easyopen.exception.ApiException;
 import lombok.Data;
 
 //Spring框架只会对抛出的异常是runtimeException时事物才会回滚
-@Data
-public class MyblogException extends RuntimeException{
-    private Integer code;
+public class MyblogException extends ApiException {
 
-    public MyblogException(Integer code, String message) {
-        super(message);
-        this.code = code;
+    public MyblogException(String code, String message) {
+        super(message, code);
     }
 }

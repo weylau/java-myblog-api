@@ -15,14 +15,9 @@ import java.io.Serializable;
 public class ArticlesContents implements Serializable {
 
     private Integer id;
-
-    @JSONField(name = "article_id")
     private Integer articleId;
-    @JSONField(name = "show_type")
     private Integer showType;
-
     private String contents;
-
     private static final long serialVersionUID = 1L;
 
 }

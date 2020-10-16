@@ -94,7 +94,7 @@ public class ArticlesServiceImpl implements ArticlesService {
             articlesContentsMapper.updateByPrimaryKey(articlesContents);
             return ResponseUtil.success();
         } else {
-            throw new MyblogException(-1, "文章不存在！");
+            throw new MyblogException("-1", "文章不存在！");
         }
 
     }

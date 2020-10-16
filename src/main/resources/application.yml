@@ -1,3 +1,22 @@
+app:
+  id: java-myblog-api
+apollo:
+  meta: http://172.16.57.110:8080
+  bootstrap:
+    enabled: true
+    namespaces: application
+    eagerLoad:
+      enabled: true
+logging:
+  level:
+    com:
+      weylau:
+        javamyblogapi:
+          controller:
+            front: debug
+feign:
+  okhttp:
+    enabled: true
 spring:
   profiles:
     active: dev

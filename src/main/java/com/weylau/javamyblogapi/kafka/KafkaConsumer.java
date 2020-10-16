@@ -16,10 +16,10 @@ import java.util.Optional;
 @Component
 @Slf4j
 public class KafkaConsumer {
-    @KafkaListener(topics = "", groupId = "" , concurrency="3")
-    public void listen(String msgData, Acknowledgment ark) throws InterruptedException {
-        log.info("demo receive : "+msgData);
-//        Thread.sleep(6000L);
-        ark.acknowledge();
-    }
+//    @KafkaListener(topics = "test_topic", groupId = "test_topic" , concurrency="3")
+//    public void listen(String msgData, Acknowledgment ark) throws InterruptedException {
+//        log.info("demo receive : "+msgData);
+////        Thread.sleep(6000L);
+//        ark.acknowledge();
+//    }
 }

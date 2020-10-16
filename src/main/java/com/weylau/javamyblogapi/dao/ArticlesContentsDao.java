@@ -1,7 +1,7 @@
 package com.weylau.javamyblogapi.dao;
 
-import com.weylau.javamyblogapi.model.Articles;
-import com.weylau.javamyblogapi.model.ArticlesContents;
+import com.weylau.javamyblogapi.entity.Articles;
+import com.weylau.javamyblogapi.entity.ArticlesContents;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 

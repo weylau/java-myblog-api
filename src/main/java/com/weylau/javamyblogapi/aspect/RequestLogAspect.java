@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
+//import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -17,8 +17,8 @@ import java.util.Date;
 @Aspect
 @Slf4j
 public class RequestLogAspect {
-    @Autowired
-    private MongoTemplate mongoTemplate;
+    /*@Autowired
+    private MongoTemplate mongoTemplate;*/
 
     @Pointcut("execution(public * com.weylau.javamyblogapi.controller.*.*.*(..))")
     public void init() {
@@ -26,7 +26,7 @@ public class RequestLogAspect {
 
     @Before("init()")
     public void before(JoinPoint joinPoint) {
-        new Thread(){
+        /*new Thread(){
             @Override
             public void run() {
                 ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
@@ -40,7 +40,7 @@ public class RequestLogAspect {
                         .build();
                 mongoTemplate.save(accessLog);
             }
-        }.start();
+        }.start();*/
 
     }
 

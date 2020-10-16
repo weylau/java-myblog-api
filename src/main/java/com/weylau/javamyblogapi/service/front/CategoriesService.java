@@ -4,13 +4,11 @@ import com.weylau.javamyblogapi.request.front.ArticleDetailRequest;
 import com.weylau.javamyblogapi.request.front.ArticleListRequest;
 import com.weylau.javamyblogapi.response.front.ArticleDetailResponse;
 import com.weylau.javamyblogapi.response.front.ArticleListResponse;
+import com.weylau.javamyblogapi.response.front.CategoriesResponse;
 
 import java.util.List;
 
-public interface ArticlesService {
-    List<ArticleListResponse> getList(ArticleListRequest articleListRequest);
-
-    ArticleDetailResponse detail(ArticleDetailRequest articleDetailRequest);
-
-//    Response getCategories();
+public interface CategoriesService {
+    List<CategoriesResponse> getList();
+    List<CategoriesResponse> getListByApi();
 }

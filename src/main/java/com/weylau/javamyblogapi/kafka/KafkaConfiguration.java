@@ -53,8 +53,7 @@ public class KafkaConfiguration {
     private Map<String, Object> consumerProps() {
         Map<String, Object> props = new HashMap<>();
         //连接地址
-        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "");
-//        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "172.16.57.110:9095");
+        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "172.16.57.110:9095");
         //GroupID
         props.put(ConsumerConfig.GROUP_ID_CONFIG, "bootKafka");
         //是否自动提交
@@ -75,7 +74,7 @@ public class KafkaConfiguration {
     private Map<String, Object> senderProps (){
         Map<String, Object> props = new HashMap<>();
         //连接地址
-        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "");
+        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "172.16.57.110:9095");
         //重试，0为不启用重试机制
         props.put(ProducerConfig.RETRIES_CONFIG, 1);
         //控制批处理大小，单位为字节

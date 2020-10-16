@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-@ControllerAdvice
+//@ControllerAdvice
 public class ExceptionHandle {
     private final static Logger logger = LoggerFactory.getLogger(RequestLogAspect.class);
 
-    @ExceptionHandler(Exception.class)
-    @ResponseBody
-    public Response handle(Exception e) {
+    //@ExceptionHandler(Exception.class)
+    //@ResponseBody
+    /*public Response handle(Exception e) {
         if(e instanceof MyblogException) {
             MyblogException myblogException = (MyblogException)e;
             return ResponseUtil.error(myblogException.getCode(),myblogException.getMessage());
@@ -27,5 +27,5 @@ public class ExceptionHandle {
             logger.info("【异常错误】{}",e);
             return ResponseUtil.error(-1, "未知错误");
         }
-    }
+    }*/
 }
