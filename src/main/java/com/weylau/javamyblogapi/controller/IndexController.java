@@ -14,7 +14,7 @@ import org.springframework.stereotype.Controller;
 public class IndexController extends ApiController {
     @Override
     protected void initApiConfig(ApiConfig apiConfig) {
-        apiConfig.setAppName("ops-coupon-stark-web"); // 配置应用名称
+        apiConfig.setAppName("java-myblog-api"); // 配置应用名称
         apiConfig.setAppKeyName("appid"); // 配置appkey的请求参数
         apiConfig.setShowDoc(true); // 显示文档页面
         apiConfig.setResultCreator(new MyResultCreator());//自定义结果返回

@@ -2,6 +2,21 @@ server:
   port: 8989
 redis_cache_key_version: 20201011
 spring:
+  # rabbitmq
+  rabbitmq:
+    host: 172.16.57.110
+    port: 5672
+    username: mq
+    password: 123456
+  # 开启confirms回调 P -> Exchange
+    publisher-confirm-type: correlated
+  # 开启returnedMessage回调 Exchange -> Queue
+    publisher-returns: true
+  # 设置手动确认(ack) Queue -> C
+    listener:
+      simple:
+       acknowledge-mode: manual
+       prefetch: 100
   redis:
     #    reids的连接ip
     host: 172.16.57.110
